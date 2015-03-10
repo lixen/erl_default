@@ -27,8 +27,16 @@
 %% doc
 -export([src/1, src/2, src/3,src/4]).
 
+%% trace
+-export([dbgtc/1, dbgon/1, dbgon/2,
+         dbgadd/1, dbgadd/2, dbgdel/1, dbgdel/2, dbgoff/0,
+         dbg_ip_trace/1,
+         la/0]).
+-export([my_tracer/0, my_dhandler/2, filt_state_from_term/1]).
+
 help() ->
     shell_default:help(),
+    user_trace:help(),
     io:format(help_text()),
     true.
 
@@ -104,3 +112,27 @@ src(M) -> shell_doc:api(M).
 src(M, Fmt) -> shell_doc:api(M,Fmt).
 src(M,F,A) -> shell_doc:print_mfa(M,F,A).
 src(M,F,A,Fmt) -> shell_doc:print_mfa(M,F,A,Fmt).
+
+%% ---------------------------------------------------------------------------
+%% Trace
+
+dbgtc(File) -> user_trace:dbgtc(File).
+dbgon(File) -> user_trace:dbgon(File).
+dbgon(Module, Fun) -> user_trace:dbgon(Module, Fun).
+
+dbg_ip_trace(TcpPort) -> user_trace:dbg_ip_trace(TcpPort).
+dbgadd(Module) -> user_trace:dbgadd(Module).
+
+dbgadd(Module, Fun) -> user_trace:dbgadd(Module, Fun).
+
+dbgdel(Module) -> user_trace:dbgdel(Module).
+dbgdel(Module, Fun) -> user_trace:dbgdel(Module, Fun).
+
+dbgoff() -> user_trace:dbgoff().
+
+la() -> user_trace:la().
+
+my_tracer() -> my_tracer:my_tracer().
+my_dhandler(TraceMsg, Acc) -> my_tracer:my_dhandler(TraceMsg, Acc).
+filt_state_from_term(T) -> my_tracer:filt_state_from_term(T).
+
